@@ -1,11 +1,10 @@
 // @ts-check
 import fs from 'fs';
-import glob from 'glob';
 import jju from 'jju';
 
 const defaultRepo = 'ecraig12345/renovate-config';
 
-const configFiles = glob.sync('./*.json5', { dot: false });
+const configFiles = fs.readdirSync(process.cwd()).filter((file) => /^[^.].*\.json5$/.test(file));
 
 // fix repo references in config files to reflect the repo/branch being tested
 const headRef = /** @type {string} */ (process.env.GITHUB_HEAD_REF);
