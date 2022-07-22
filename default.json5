@@ -1,19 +1,6 @@
-// Available options:
-// https://docs.renovatebot.com/configuration-options/
-
-// NOTE: Renovate only allows comments in .json5 files, but this isn't well-supported by
-// Prettier + VS Code. Workaround is to configure tools to treat the file as JSONC
-// (in .prettierrc and .vscode/settings.json).
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
 
-  // Available presets (see also other pages in the same section): https://docs.renovatebot.com/presets-default/
-  // Preset definitions: https://github.com/renovatebot/renovate/tree/main/lib/config/presets/internal
-  // Note that there's a `config:base` which we don't use because it tends to pin too many types
-  // of deps. (Pinning non-dev dependencies often undesirable, particularly for UI libraries,
-  // because it can create a lot of duplicates in the consuming repo. This causes bundle bloat
-  // and sometimes even runtime problems.)
-  // More info: https://docs.renovatebot.com/dependency-pinning/
   "extends": [
     // Ignore node_modules and anything under common test/fixture directory names
     ":ignoreModulesAndTests",

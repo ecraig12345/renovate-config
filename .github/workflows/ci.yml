@@ -15,21 +15,13 @@ jobs:
 
       - run: yarn
 
-      - name: install Renovate (latest)
-        run: yarn add -D renovate
-
       - name: update preset repo paths in configs
-        run: node ./scripts/fixRepoRefs.js
+        run: yarn fix-repo-refs
 
       - name: test configs
+        run: yarn test
+
+      - name: commit and push
         run: |
-          for config in *.json5; do
-            echo "::group::Testing $config"
-            cat $config
-            echo
-            RENOVATE_CONFIG_FILE=$config yarn renovate-config-validator $config
-            if [[ $? -ne 0 ]]; then
-              echo "::error file=$config::Invalid config file"
-            fi
-            echo "::endgroup::"
-          done
+          git commit -a -m 'Update README.md'
+          git push origin main
