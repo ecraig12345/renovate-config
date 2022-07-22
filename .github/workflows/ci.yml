@@ -25,5 +25,5 @@ jobs:
         run: |
           for config in *.json5; do
             echo "Testing $config"
-            RENOVATE_CONFIG_FILE yarn renovate-config-validator $config
+            RENOVATE_CONFIG_FILE=$config yarn renovate-config-validator $config
           done
