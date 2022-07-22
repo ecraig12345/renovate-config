@@ -6,11 +6,9 @@ import { readConfigs } from './readConfigs.js';
 const defaultRepo = 'ecraig12345/renovate-config';
 
 // fix repo references in config files to reflect the repo/branch being tested
-const headRef = /** @type {string} */ (process.env.GITHUB_HEAD_REF);
-const repo = /** @type {string} */ (process.env.GITHUB_REPOSITORY);
-
+const [headRef, repo] = process.argv.slice(2);
 if (!headRef || !repo) {
-  console.error('This script should only be run in CI');
+  console.error('must provide head ref and repo as positional args');
   process.exit(1);
 }
 
@@ -20,9 +18,11 @@ if (headRef !== 'main' || repo !== defaultRepo) {
   for (const [configFile, { json }] of Object.entries(configs)) {
     if (json.extends) {
       json.extends = json.extends.map((preset) => {
-        preset = preset.replace(defaultRepo, repo);
-        if (headRef !== 'main') {
-          preset += `#${headRef}`;
+        if (preset.includes(defaultRepo)) {
+          preset = preset.replace(defaultRepo, repo);
+          if (headRef !== 'main') {
+            preset += `#${headRef}`;
+          }
         }
         return preset;
       });
