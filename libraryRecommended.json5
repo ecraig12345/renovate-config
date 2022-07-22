@@ -1,0 +1,12 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  "description": "Recommended config for a library repo or monorepo",
+
+  "extends": [
+    "github>ecraig12345/renovate-config",
+    "github>ecraig12345/renovate-config:dependencyDashboardMajor",
+    "github>ecraig12345/renovate-config:beachballLibrary",
+    ":maintainLockFilesWeekly"
+  ]
+}

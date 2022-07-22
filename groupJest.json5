@@ -1,0 +1,14 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  // https://docs.renovatebot.com/configuration-options/#packagerules
+  "packageRules": [
+    {
+      "groupName": "jest packages",
+      "matchPackagePrefixes": ["@jest/", "@types/jest"],
+      "matchPackageNames": ["jest", "ts-jest"],
+      // don't group pinning updates
+      "matchUpdateTypes": ["major", "minor", "patch", "rollback", "bump"]
+    }
+  ]
+}

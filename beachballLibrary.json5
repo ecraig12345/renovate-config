@@ -1,0 +1,68 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  "description": "Dependency management strategy for library repos, including Beachball change file generation",
+
+  // Generate change files after upgrade
+  "postUpgradeTasks": {
+    "commands": [
+      "git add --all",
+      "npx beachball change --no-commit --type patch --message '{{{commitMessage}}}'",
+      // After server config change:
+      // "npx beachball change --no-fetch --no-commit --type patch --message '{{{commitMessage}}}'",
+      "git reset"
+    ],
+    "fileFilters": ["**/*"],
+    "executionMode": "branch"
+  },
+
+  // By default (see overrides for dev and peer deps later), replace the semver range
+  // with a newer one if the new version falls outside it, and update nothing otherwise
+  // https://docs.renovatebot.com/configuration-options/#rangestrategy
+  "rangeStrategy": "replace",
+
+  // Config and overrides for pinning
+  // https://docs.renovatebot.com/configuration-options/#pin
+  "pin": {
+    // Pinning is only used for devDependencies, so make the commit message more specific
+    "commitMessageTopic": "devDependencies"
+    // // Use change type none (requires server config update)
+    // "postUpgradeTasks": {
+    //   "commands": [
+    //     "git add --all",
+    //     "beachball change --no-fetch --no-commit --type none --message '{{{commitMessage}}}'",
+    //     "git reset"
+    //   ],
+    //   "fileFilters": ["**/*"],
+    //   "executionMode": "branch"
+    // }
+  },
+
+  "packageRules": [
+    // Overrides for changes only affecting devDependencies
+    {
+      "matchDepTypes": ["devDependencies"],
+      // Make it clear in the commit message and PR title that this only affects dev deps
+      "commitMessageTopic": "devDependency {{depName}}",
+      // Pin devDependencies
+      "rangeStrategy": "pin"
+      // // Use change type none (requires server config update)
+      // "postUpgradeTasks": {
+      //   "commands": [
+      //     "git add --all",
+      //     "beachball change --no-fetch --no-commit --type none --message '{{{commitMessage}}}'",
+      //     "git reset"
+      //   ],
+      //   "fileFilters": ["**/*"],
+      //   "executionMode": "branch"
+      // }
+    },
+
+    // Overrides for changes only affecting peerDependencies
+    {
+      "matchDepTypes": ["peerDependencies"],
+      // Widen the range with newer one, e.g. ^1.0.0 -> ^1.0.0 || ^2.0.0
+      "rangeStrategy": "widen"
+    }
+  ]
+}

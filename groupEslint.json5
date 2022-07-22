@@ -1,0 +1,13 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  // https://docs.renovatebot.com/configuration-options/#packagerules
+  "packageRules": [
+    {
+      "groupName": "eslint packages",
+      "matchPackagePatterns": ["eslint"],
+      // don't group pinning updates
+      "matchUpdateTypes": ["major", "minor", "patch", "rollback", "bump"]
+    }
+  ]
+}

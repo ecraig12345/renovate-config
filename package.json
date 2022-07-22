@@ -1,0 +1,11 @@
+{
+  "name": "@ecraig12345/renovate-config",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "devDependencies": {
+    "@types/node": "^16.0.0",
+    "glob": "^8.0.3",
+    "jju": "^1.4.0"
+  }
+}
