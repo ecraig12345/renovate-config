@@ -1,5 +1,11 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:base", "github>ecraig12345/renovate-config"]
-  // update...
+  "extends": ["config:base", "github>ecraig12345/renovate-config"],
+  "packageRules": [
+    {
+      // automerge updates to renovate (we always want the latest version)
+      "matchPackageNames": ["renovate"],
+      "automerge": true
+    }
+  ]
 }

@@ -1,17 +1,21 @@
 // @ts-check
 import fs from 'fs';
-import jju from 'jju';
+
+const excludeFiles = ['package.json'];
 
 /**
  * @returns {Record<string, { content: string; json: any }>}
  */
 export function readConfigs() {
-  const configFiles = fs.readdirSync(process.cwd()).filter((file) => /^[^.].*\.json5$/.test(file));
+  const configFiles = fs
+    .readdirSync(process.cwd())
+    .filter((file) => /^[^.].*\.json$/.test(file) && !excludeFiles.includes(file));
+
   const configs = /** @type {*} */ ({});
 
   for (const configFile of configFiles) {
     const content = fs.readFileSync(configFile, 'utf8');
-    configs[configFile] = { content, json: jju.parse(content) };
+    configs[configFile] = { content, json: JSON.parse(content) };
   }
 
   return configs;

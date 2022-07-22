@@ -25,5 +25,6 @@ jobs:
         run: |
           git config user.name "GitHub Workflow"
           git config user.email "not provided"
-          git commit -a -m 'Update generated readme section'
+          git add README.md
+          git commit -m 'Update generated readme section'
           git push origin main
