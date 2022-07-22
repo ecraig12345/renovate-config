@@ -1,3 +1,4 @@
+name: Update readme
 on:
   push:
     branches: [main]
@@ -14,3 +15,8 @@ jobs:
 
       - name: update readme
         run: yarn update-readme
+
+      - name: commit and push
+        run: |
+          git commit -a -m 'Update generated readme section'
+          git push origin main
