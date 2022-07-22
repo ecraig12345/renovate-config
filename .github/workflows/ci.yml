@@ -24,6 +24,12 @@ jobs:
       - name: test configs
         run: |
           for config in *.json5; do
-            echo "Testing $config"
+            echo "::group::Testing $config"
+            cat $config
+            echo
             RENOVATE_CONFIG_FILE=$config yarn renovate-config-validator $config
+            if [[ $? -ne 0 ]]; then
+              echo "::error file=$config::Invalid config file"
+            fi
+            echo "::endgroup::"
           done
