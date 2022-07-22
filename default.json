@@ -1,0 +1,15 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+
+  "extends": [
+    ":ignoreModulesAndTests",
+    ":rebaseStalePrs",
+    "group:monorepos",
+    "group:recommended",
+    "workarounds:all",
+    ":enableVulnerabilityAlerts",
+    "github>ecraig12345/renovate-config:newConfigWarningIssue"
+  ],
+
+  "printConfig": true
+}
