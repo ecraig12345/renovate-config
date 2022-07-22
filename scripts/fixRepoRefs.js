@@ -1,6 +1,6 @@
 // @ts-check
 import fs from 'fs';
-import { glob } from 'glob';
+import glob from 'glob';
 import jju from 'jju';
 
 const defaultRepo = 'ecraig12345/renovate-config';
