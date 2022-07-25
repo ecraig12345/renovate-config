@@ -4,9 +4,9 @@ import fs from 'fs';
 import path from 'path';
 import { spawnSync } from 'child_process';
 import { readConfigs } from './readConfigs.js';
+import { root } from './paths.js';
 
 const defaultRepo = 'ecraig12345/renovate-config';
-const root = path.resolve(__dirname, '..');
 const isGithub = !!process.env.CI;
 const configs = readConfigs();
 

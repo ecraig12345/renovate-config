@@ -1,9 +1,9 @@
 // @ts-check
 import fs from 'fs';
 import path from 'path';
+import { root } from './paths.js';
 
 const excludeFiles = ['package.json'];
-const root = path.resolve(__dirname, '..');
 
 /**
  * @returns {Record<string, { content: string; json: any }>} mapping from config absolute path to content
