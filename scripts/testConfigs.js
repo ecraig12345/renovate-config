@@ -13,8 +13,24 @@ const configs = readConfigs();
 /** @type {(err: string, file?: string) => void} */
 const logError = (err, file) =>
   console.error(isGithub ? `::error${file ? ` file=${file}` : ''}::${err}` : err);
-const logGroup = (name) => console.log(isGithub ? name : `::group::${name}`);
+const logGroup = (name) => console.log(isGithub ? `::group::${name}` : name);
 const logEndGroup = () => console.log(isGithub ? '::endgroup::' : '');
+
+/**
+ * Run a binary provided by a node module
+ * @param {string} bin
+ * @param {string[]} args
+ * @param {import('child_process').SpawnSyncOptions} opts
+ */
+function runBin(bin, args, opts) {
+  return spawnSync(process.execPath, [path.join(root, 'node_modules/.bin', bin), ...args], {
+    cwd: root,
+    stdio: 'inherit',
+    shell: true, // required for stdio to show up
+    maxBuffer: 1024 * 1024 * 100,
+    ...opts,
+  });
+}
 
 function getEnv(envName) {
   const env = process.env[envName];
@@ -28,21 +44,20 @@ function getEnv(envName) {
 function runBasicConfigTest() {
   // Use renovate-config-validator to test for blatantly invalid configuration.
   // But it DOES NOT test validity of preset names in the `extends` configuration.
-  for (const [config, { content }] of Object.entries(configs)) {
+  for (const config of Object.keys(configs)) {
     const configName = path.basename(config);
     logGroup(`Testing ${configName}`);
-    console.log(content);
 
-    const result = spawnSync('yarn', ['renovate-config-validator'], {
-      cwd: root,
+    // 'node',
+    // [path.join(root, 'node_modules/.bin/renovate-config-validator')],
+
+    const result = runBin('renovate-config-validator', [], {
       env: { RENOVATE_CONFIG_FILE: config },
-      stdio: 'inherit',
-      maxBuffer: 1024 * 1024 * 10,
     });
 
     if (result.status !== 0) {
       process.exitCode = 1;
-      logError(`Config file "${configName}" is invalid`, configName);
+      logError(`Error validating "${configName}" (see logs above for details)`, configName);
     }
 
     logEndGroup();
@@ -70,19 +85,13 @@ function runFullRenovateTest(token) {
   const configPath = path.join(root, 'config.js');
   fs.writeFileSync(configPath, `module.exports = ${JSON.stringify(selfHostedConfig, null, 2)}`);
 
-  const result = spawnSync('yarn', ['renovate', '--dry-run'], {
-    cwd: root,
-    env: {
-      LOG_FORMAT: 'json',
-      LOG_LEVEL: 'info',
-    },
-    stdio: 'inherit',
-    maxBuffer: 1024 * 1024 * 100,
+  const result = runBin('renovate', ['--dry-run'], {
+    env: { LOG_FORMAT: 'json', LOG_LEVEL: 'info' },
   });
 
   if (result.status !== 0) {
-    logError('Invalid Renovate config');
-    console.log(fs.readFileSync(logFile, 'utf8'));
+    logError('Error running Renovate to test the configs');
+    // console.log(fs.readFileSync(logFile, 'utf8'));
     process.exitCode = 1;
   }
   logEndGroup();
