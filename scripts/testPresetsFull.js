@@ -59,14 +59,22 @@ logEndGroup();
 
 logGroup('Running Renovate');
 const result = runBin('renovate', ['--dry-run'], {
-  env: { LOG_LEVEL: 'debug', RENOVATE_CONFIG_FILE: configFile },
+  env: { LOG_LEVEL: 'info', RENOVATE_CONFIG_FILE: configFile },
 });
 logEndGroup();
 
 if (result.status !== 0) {
   logError('Error running Renovate to test the configs');
   logGroup('Renovate log file');
+  readRenovateLogs();
   console.log(fs.readFileSync(logFile, 'utf8'));
   logEndGroup();
   process.exit(1);
+}
+
+function readRenovateLogs() {
+  const logLines = fs.readFileSync(logFile, 'utf8').split(/\r?\n/g);
+  for (const line of logLines) {
+    console.log(line);
+  }
 }
