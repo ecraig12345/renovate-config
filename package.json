@@ -7,8 +7,8 @@
     "build": "tsc -p jsconfig.json",
     "fix-repo-refs": "node ./scripts/fixRepoRefs.js",
     "update-readme": "node ./scripts/updateReadme.js",
-    "test:basic": "node ./scripts/testConfigsBasic.js",
-    "test:full": "node ./scripts/testConfigsFull.js"
+    "test:basic": "node ./scripts/testPresetsBasic.js",
+    "test:full": "node ./scripts/testPresetsFull.js"
   },
   "devDependencies": {
     "@types/node": "^16.0.0",

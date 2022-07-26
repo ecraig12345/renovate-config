@@ -3,7 +3,7 @@ import path from 'path';
 import { getEnv } from './utils/getEnv.js';
 import { isGithub, logEndGroup, logError, logGroup } from './utils/github.js';
 import { root } from './utils/paths.js';
-import { readConfigs } from './utils/readConfigs.js';
+import { readPresets } from './utils/readPresets.js';
 import { runBin } from './utils/runBin.js';
 
 const defaultRepo = 'ecraig12345/renovate-config';
@@ -27,7 +27,7 @@ if (!isGithub || ref !== 'refs/heads/main' || repository !== defaultRepo) {
   process.exit(0);
 }
 
-const configs = readConfigs();
+const presets = readPresets();
 
 const logFile = path.join(root, 'renovate.log');
 fs.writeFileSync(logFile, ''); // Renovate wants this to exist already
@@ -43,7 +43,7 @@ const selfHostedConfig = {
   token,
   // force an "extends" config with all the presets from this repo
   force: {
-    extends: [Object.keys(configs).map((c) => `${defaultRepo}:${path.basename(c, '.json')}`)],
+    extends: [Object.keys(presets).map((p) => `${defaultRepo}:${path.basename(p, '.json')}`)],
     printConfig: true,
   },
 };
