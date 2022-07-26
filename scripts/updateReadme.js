@@ -1,8 +1,7 @@
-// @ts-check
 import { spawnSync } from 'child_process';
 import fs from 'fs';
-import jju from 'jju';
-import { readConfigs } from './readConfigs.js';
+import path from 'path';
+import { readConfigs } from './utils/readConfigs.js';
 
 const comment = '<!-- start auto section -->';
 const readmeFile = 'README.md';
@@ -12,17 +11,15 @@ readme += `${comment}\n`;
 
 const configs = readConfigs();
 for (const [configFile, { content, json }] of Object.entries(configs)) {
+  const configName = path.basename(configFile, '.json');
   const description = json.description ? `\n${json.description}\n` : '';
   delete json.description;
   delete json['$schema'];
 
-  // const modifiedContent = jju.stringify(json, { indent: 2, mode: 'cjson' });
-  const modifiedContent = jju
-    .update(content, json, { indent: 2, mode: 'cjson' })
-    .replace(/^ +\/\/ \/\/[\s\S]+?  \/\/ \}/gm, '');
+  const modifiedContent = JSON.stringify(content, null, 2);
 
   readme += `
-### \`${configFile.replace(/\.json5$/, '')}\`
+### \`${configName}\`
 ${description}
 \`\`\`jsonc
 ${modifiedContent}

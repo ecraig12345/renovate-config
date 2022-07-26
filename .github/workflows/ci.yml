@@ -18,17 +18,20 @@ jobs:
         with:
           node-version: 18
 
-      - run: yarn
+      - run: yarn --frozen-lockfile
 
-      - name: test configs
-        run: yarn test
+      - name: Type check scripts
+        run: yarn build
+
+      - name: Basic config validation
+        run: yarn test:basic
+        env:
+          CI: true
+
+      - name: Renovate dry run with all configs
+        run: yarn test:full
         env:
           CI: true
           GITHUB_REF: $(github.ref)
           GITHUB_REPOSITORY: $(github.repository)
-          TOKEN: $(secrets.githubReadPAT)
-
-      - name: commit and push
-        run: |
-          git commit -a -m 'Update README.md'
-          git push origin main
+          TOKEN: $(secrets.TOKEN_GITHUB_READ)
