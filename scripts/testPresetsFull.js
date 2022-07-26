@@ -61,7 +61,7 @@ logEndGroup();
 
 logGroup('Running Renovate');
 const result = runBin('renovate', ['--dry-run'], {
-  env: { GITHUB_COM_TOKEN: token, LOG_LEVEL: 'debug', RENOVATE_CONFIG_PATH: configFile },
+  env: { GITHUB_COM_TOKEN: token, LOG_LEVEL: 'debug', RENOVATE_CONFIG_FILE: configFile },
 });
 logEndGroup();
 
