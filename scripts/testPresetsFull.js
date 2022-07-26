@@ -66,8 +66,7 @@ const result = runBin('renovate', ['--dry-run=extract'], {
 logEndGroup();
 
 if (result.status !== 0) {
-  logError('Error running Renovate to test the configs');
-  readRenovateLogs();
+  logRenovateError();
   process.exit(1);
 }
 
@@ -76,31 +75,49 @@ if (result.status !== 0) {
  *   msg: string;
  *   level: 10 | 20 | 30 | 40 | 50 | 60;
  *   err?: Error & { err?: Error & {} };
- * }} RenovateLog
+ * }} RenovateLog Entry in Renovate's log file
  * @typedef {RenovateLog & { preset: string }} RenovatePresetDebugLog
  */
 
 /** @param {RenovateLog} log */
 function logRenovateErrorDetails(log) {
+  const { err } = log;
+  if (!err) return;
+
   logGroup('Error details');
-  console.log(log.err?.stack);
-  console.log('Original error:', JSON.stringify(log.err?.err, null, 2));
+
+  // Typically the inner error in Renovate logs is the one with interesting content.
+  // For example, if a preset name is invalid, this is where you'll find the 404 HTTPError.
+  const innerError = /** @type {(Error & Record<string, any>) | undefined} */ (err.err);
+  if (innerError?.name === 'HTTPError') {
+    console.log(`HTTP error requesting ${innerError.options?.url}`);
+    console.log(innerError.message);
+  }
+
+  // The outer error will likely have a better stack in the case of async HTTP errors
+  console.log('\nOuter error:');
+  console.log(err.stack);
+
+  if (innerError) {
+    console.log('\nOriginal error:');
+    console.log(JSON.stringify(innerError, null, 2));
+  }
+
   logEndGroup();
 }
 
-function readRenovateLogs() {
+function logRenovateError() {
+  // Each line in the log file is a JSON blob
   /** @type {RenovateLog[]} */
   const logs = fs
     .readFileSync(logFile, 'utf8')
-    .trim()
     .split(/\r?\n/g)
     .map((str) => {
       try {
         return JSON.parse(str);
-      } catch (err) {
-        return {};
-      }
-    });
+      } catch (err) {}
+    })
+    .filter((l) => !!l);
 
   const invalidPresetLog = logs.find((l) => !!l.err && l.msg === 'config-presets-invalid');
   if (invalidPresetLog) {
