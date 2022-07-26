@@ -47,11 +47,13 @@ const selfHostedConfig = {
     printConfig: true,
   },
 };
-// write the config file to default expected location
-const configPath = path.join(root, 'config.js');
-// this must use "export default" since the project uses type module
-const configContent = `export default ${JSON.stringify(selfHostedConfig, null, 2)}`;
-fs.writeFileSync(configPath, configContent);
+// Normally the Renovate server config would be JS, but Renovate seems to have trouble importing
+// the JS config due to this package having type: module (and fails with a misleading error).
+// So write the config to JSON instead.
+// Also, use .json5 to ensure it's not interpreted as a preset by any other steps.
+const configFile = path.join(root, 'renovate-config.json5');
+const configContent = JSON.stringify(selfHostedConfig, null, 2);
+fs.writeFileSync(configFile, configContent);
 
 logGroup('Renovate server config:');
 console.log(configContent);
@@ -59,7 +61,7 @@ logEndGroup();
 
 logGroup('Running Renovate');
 const result = runBin('renovate', ['--dry-run'], {
-  env: { GITHUB_COM_TOKEN: token, LOG_LEVEL: 'debug' },
+  env: { GITHUB_COM_TOKEN: token, LOG_LEVEL: 'debug', RENOVATE_CONFIG_PATH: configFile },
 });
 logEndGroup();
 
