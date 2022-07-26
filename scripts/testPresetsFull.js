@@ -1,12 +1,11 @@
 import fs from 'fs';
 import path from 'path';
 import { getEnv } from './utils/getEnv.js';
-import { isGithub, logEndGroup, logError, logGroup } from './utils/github.js';
+import { defaultRepo, isGithub, logEndGroup, logError, logGroup } from './utils/github.js';
 import { root } from './utils/paths.js';
 import { readPresets } from './utils/readPresets.js';
 import { runBin } from './utils/runBin.js';
 
-const defaultRepo = 'ecraig12345/renovate-config';
 const ref = getEnv('GITHUB_REF', isGithub);
 const repository = getEnv('GITHUB_REPOSITORY', isGithub);
 const token = getEnv('TOKEN', isGithub);

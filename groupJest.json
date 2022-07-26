@@ -1,13 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
 
-  // https://docs.renovatebot.com/configuration-options/#packagerules
+  "description": "Group jest, ts-jest, and jest types (except when initially pinning).",
+
   "packageRules": [
     {
       "groupName": "jest packages",
-      "matchPackagePrefixes": ["@jest/", "@types/jest"],
-      "matchPackageNames": ["jest", "ts-jest"],
-      // don't group pinning updates
+      "matchPackagePrefixes": ["@jest/", "@types/jest", "jest"],
+      "matchPackageNames": ["ts-jest"],
       "matchUpdateTypes": ["major", "minor", "patch", "rollback", "bump"]
     }
   ]

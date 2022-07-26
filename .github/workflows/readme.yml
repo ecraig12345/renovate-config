@@ -1,8 +1,7 @@
 name: Update readme
 on:
   push:
-    branches: [fake-does-not-exist-this-is-disabled]
-    # branches: [main]
+    branches: [main]
 
 jobs:
   ci:

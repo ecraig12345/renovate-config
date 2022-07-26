@@ -1,15 +1,13 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
 
-  // https://docs.renovatebot.com/configuration-options/#packagerules
+  "description": "Group Fluent UI package updates (except when initially pinning).",
+
   "packageRules": [
     {
       "groupName": "Fluent UI packages",
       "matchPackagePrefixes": ["@fluentui/"],
-      // don't group pinning updates
       "matchUpdateTypes": ["major", "minor", "patch", "rollback", "bump"]
-      // would be good to dedupe after updates, but this may not be safe in all repos
-      // "postUpdateOptions": ["npmDedupe", "yarnDedupeFewest"]
     }
   ]
 }

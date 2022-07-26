@@ -24,6 +24,9 @@ jobs:
       - name: Type check scripts
         run: yarn build
 
+      - name: Lint presets
+        run: yarn lint
+
       - name: Basic config validation
         run: yarn test:basic
 

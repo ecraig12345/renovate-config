@@ -1,15 +1,26 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
 
+  "description": ["Recommended config which is intended to be appropriate for most projects."],
+
   "extends": [
     ":ignoreModulesAndTests",
     ":rebaseStalePrs",
+    ":semanticPrefixFixDepsChoreOthers",
     "group:monorepos",
     "group:recommended",
     "workarounds:all",
-    ":enableVulnerabilityAlerts",
     "github>ecraig12345/renovate-config:newConfigWarningIssue"
   ],
 
-  "printConfig": true
+  "dependencyDashboard": true,
+
+  "prConcurrentLimit": 10,
+  "prHourlyLimit": 2,
+
+  "printConfig": true,
+
+  "vulnerabilityAlerts": {
+    "enabled": true
+  }
 }
