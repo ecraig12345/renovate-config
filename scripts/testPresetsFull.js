@@ -58,23 +58,66 @@ console.log(configContent);
 logEndGroup();
 
 logGroup('Running Renovate');
-const result = runBin('renovate', ['--dry-run'], {
+// All we really need here is the config validation, so do the shortest type of dry run
+// https://docs.renovatebot.com/self-hosted-configuration/#dryrun
+const result = runBin('renovate', ['--dry-run=extract'], {
   env: { LOG_LEVEL: 'info', RENOVATE_CONFIG_FILE: configFile },
 });
 logEndGroup();
 
 if (result.status !== 0) {
   logError('Error running Renovate to test the configs');
-  logGroup('Renovate log file');
   readRenovateLogs();
-  console.log(fs.readFileSync(logFile, 'utf8'));
-  logEndGroup();
   process.exit(1);
 }
 
+/**
+ * @typedef {{
+ *   msg: string;
+ *   level: 10 | 20 | 30 | 40 | 50 | 60;
+ *   err?: Error & { err?: Error & {} };
+ * }} RenovateLog
+ * @typedef {RenovateLog & { preset: string }} RenovatePresetDebugLog
+ */
+
+/** @param {RenovateLog} log */
+function logRenovateErrorDetails(log) {
+  logGroup('Error details');
+  console.log(log.err?.stack);
+  console.log('Original error:', JSON.stringify(log.err?.err, null, 2));
+  logEndGroup();
+}
+
 function readRenovateLogs() {
-  const logLines = fs.readFileSync(logFile, 'utf8').split(/\r?\n/g);
-  for (const line of logLines) {
-    console.log(line);
+  /** @type {RenovateLog[]} */
+  const logs = fs
+    .readFileSync(logFile, 'utf8')
+    .trim()
+    .split(/\r?\n/g)
+    .map((str) => {
+      try {
+        return JSON.parse(str);
+      } catch (err) {
+        return {};
+      }
+    });
+
+  const invalidPresetLog = logs.find((l) => !!l.err && l.msg === 'config-presets-invalid');
+  if (invalidPresetLog) {
+    // As of writing, there's only a debug log which directly includes the name of the preset that
+    // failed to validate (it's not included in any of the higher-severity logs)
+    const presetDebugLog = /** @type {RenovatePresetDebugLog | undefined} */ (
+      logs.find((l) => !!l.err && /** @type {RenovatePresetDebugLog} */ (l).preset)
+    );
+
+    if (presetDebugLog) {
+      logError(`Preset "${presetDebugLog.preset}" is invalid`);
+      logRenovateErrorDetails(presetDebugLog);
+    } else {
+      logError('A preset failed to validate');
+      logRenovateErrorDetails(invalidPresetLog);
+    }
+  } else {
+    logError('Running Renovate failed for an unknown reason');
   }
 }
