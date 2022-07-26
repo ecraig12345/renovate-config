@@ -34,6 +34,7 @@ fs.writeFileSync(logFile, ''); // Renovate wants this to exist already
 
 // https://docs.renovatebot.com/self-hosted-configuration/
 const selfHostedConfig = {
+  platform: 'github',
   repositories: [defaultRepo],
   hostRules: [{ abortOnError: true }],
   logFile,
@@ -42,6 +43,7 @@ const selfHostedConfig = {
   // force an "extends" config with all the presets from this repo
   force: {
     extends: [Object.keys(configs).map((c) => `${defaultRepo}:${path.basename(c, '.json')}`)],
+    printConfig: true,
   },
 };
 // write the config file to default expected location
@@ -54,7 +56,7 @@ console.log(configContent);
 logEndGroup();
 
 const result = runBin('renovate', ['--dry-run'], {
-  env: { LOG_FORMAT: 'json', LOG_LEVEL: 'info' },
+  env: { GITHUB_COM_TOKEN: token, LOG_FORMAT: 'json', LOG_LEVEL: 'info' },
 });
 
 if (result.status !== 0) {

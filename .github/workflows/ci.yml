@@ -25,13 +25,8 @@ jobs:
 
       - name: Basic config validation
         run: yarn test:basic
-        env:
-          CI: true
 
       - name: Renovate dry run with all configs
         run: yarn test:full
         env:
-          CI: true
-          GITHUB_REF: $(github.ref)
-          GITHUB_REPOSITORY: $(github.repository)
-          TOKEN: $(secrets.TOKEN_GITHUB_READ)
+          TOKEN: ${{ secrets.TOKEN_GITHUB_READ }}

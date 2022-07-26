@@ -11,9 +11,5 @@ export function getEnv(envName, required) {
     logError(`process.env.${envName} is missing`);
     process.exit(1);
   }
-  if (env && env.startsWith('$(')) {
-    logError(`process.env.${envName} was set to an invalid variable name: ${env}`);
-    process.exit(1);
-  }
   return env;
 }
