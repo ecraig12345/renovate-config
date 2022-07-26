@@ -12,9 +12,9 @@
     "update-readme": "node ./scripts/updateReadme.js"
   },
   "devDependencies": {
-    "@types/node": "^16.0.0",
-    "prettier": "^2.7.1",
-    "renovate": "^32.122.2",
+    "@types/node": "16.11.45",
+    "prettier": "2.7.1",
+    "renovate": "32.122.2",
     "typescript": "4.7.4"
   }
 }
