@@ -2012,10 +2012,10 @@ color-support@^1.1.3:
   resolved "https://registry.yarnpkg.com/color-support/-/color-support-1.1.3.tgz#93834379a1cc9a0c61f82f52f0d04322251bd5a2"
   integrity sha512-qiBjkpbMLO/HL68y+lh4q0/O1MZFj2RX6X/KmMa3+gJD3z+WwI1ZzDHysvqHGS3mP6mznPckpXmw1nI9cJjyRg==
 
-commander@9.3.0:
-  version "9.3.0"
-  resolved "https://registry.yarnpkg.com/commander/-/commander-9.3.0.tgz#f619114a5a2d2054e0d9ff1b31d5ccf89255e26b"
-  integrity sha512-hv95iU5uXPbK83mjrJKuZyFM/LBAoCV/XhVGkS5Je6tl7sxr6A0ITMw5WoRV46/UaJ46Nllm3Xt7IaJhXTIkzw==
+commander@9.4.0:
+  version "9.4.0"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-9.4.0.tgz#bc4a40918fefe52e22450c111ecd6b7acce6f11c"
+  integrity sha512-sRPT+umqkz90UA8M1yqYfnHlZA7fF6nSphDtxeywPZ49ysjxDQybzk13CL+mXekDRG92skbcqCLVovuCusNmFw==
 
 commander@^2.19.0:
   version "2.20.3"
@@ -4139,10 +4139,10 @@ remark@13.0.0:
     remark-stringify "^9.0.0"
     unified "^9.1.0"
 
-renovate@32.122.2:
-  version "32.122.2"
-  resolved "https://registry.yarnpkg.com/renovate/-/renovate-32.122.2.tgz#53f2390ec87fb1fd29f66281449e36d0fad6f6d2"
-  integrity sha512-meraSJ4ccgDIzBSX/y6ZUlU/DsCOemMFtJ3IO47YlkXhvfmZiacV97NMleG/BOwCgxSTEFrnuqzkpRyCPOI/Ww==
+renovate@32.130.0:
+  version "32.130.0"
+  resolved "https://registry.yarnpkg.com/renovate/-/renovate-32.130.0.tgz#5fc1fc99868e91ac612d5c6d85bfcd1d7c5aceff"
+  integrity sha512-jGfCNMrSksVR0+VJEDfZff1BRktdrpo1BOI0/pIjfA0nfKQ4VbAY7GiT9TJ0YsJJlG2Yud7Ex1qvEZCkZlvYmg==
   dependencies:
     "@aws-sdk/client-ec2" "3.112.0"
     "@aws-sdk/client-ecr" "3.112.0"
@@ -4164,7 +4164,7 @@ renovate@32.122.2:
     chalk "4.1.2"
     changelog-filename-regex "2.0.1"
     clean-git-ref "2.0.1"
-    commander "9.3.0"
+    commander "9.4.0"
     conventional-commits-detector "1.0.3"
     crypto-random-string "3.3.1"
     deepmerge "4.2.2"
