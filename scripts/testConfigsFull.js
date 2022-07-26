@@ -49,9 +49,8 @@ const selfHostedConfig = {
 };
 // write the config file to default expected location
 const configPath = path.join(root, 'config.js');
-console.log('cwd', process.cwd());
-console.log('config path:', configPath);
-const configContent = `module.exports = ${JSON.stringify(selfHostedConfig, null, 2)}`;
+// this must use "export default" since the project uses type module
+const configContent = `export default ${JSON.stringify(selfHostedConfig, null, 2)}`;
 fs.writeFileSync(configPath, configContent);
 
 logGroup('Renovate server config:');
