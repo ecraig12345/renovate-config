@@ -24,8 +24,10 @@ jobs:
 
       - name: Commit and push
         run: |
-          git config user.name "GitHub Workflow"
-          git config user.email "not provided"
-          git add README.md
-          git commit -m 'Update generated readme section'
-          git push origin main
+          if [[ `git status --porcelain` ]]; then
+            git config user.name "GitHub Workflow"
+            git config user.email "not provided"
+            git add README.md
+            git commit -m 'Update generated readme section'
+            git push origin main
+          fi
