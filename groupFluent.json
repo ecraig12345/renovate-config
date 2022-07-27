@@ -6,7 +6,7 @@
   "packageRules": [
     {
       "groupName": "Fluent UI packages",
-      "matchPackagePrefixes": ["@fluentui/"],
+      "matchPackagePrefixes": ["@fluentui/", "@griffel/", "@uifabric/"],
       "matchUpdateTypes": ["major", "minor", "patch", "rollback", "bump"]
     }
   ]

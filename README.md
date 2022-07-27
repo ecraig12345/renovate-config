@@ -190,7 +190,7 @@ The downside of setting this policy for all major upgrades is that it reduces th
 Some alternative strategies which would need to be configured per repo (see [Renovate docs](https://docs.renovatebot.com/configuration-options/#dependencydashboardapproval) for examples):
 
 - Create a `packageRules` group which requires dependency dashboard approval for only major upgrades of specific packages that are known to be high risk/effort.
-- Set schedules for individual `packageRules` groups to avoid the upgrades being forgotten.
+- Set [schedules](https://docs.renovatebot.com/configuration-options/#schedule) for individual `packageRules` groups to avoid the upgrades being forgotten.
 
 <!-- end extra content -->
 
@@ -240,7 +240,7 @@ Group Fluent UI package updates (except when initially pinning).
   "packageRules": [
     {
       "groupName": "Fluent UI packages",
-      "matchPackagePrefixes": ["@fluentui/"],
+      "matchPackagePrefixes": ["@fluentui/", "@griffel/", "@uifabric/"],
       "matchUpdateTypes": ["major", "minor", "patch", "rollback", "bump"]
     }
   ]
