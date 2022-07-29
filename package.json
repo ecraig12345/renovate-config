@@ -14,7 +14,7 @@
   "devDependencies": {
     "@types/node": "16.11.45",
     "prettier": "2.7.1",
-    "renovate": "32.133.0",
+    "renovate": "32.134.0",
     "typescript": "4.7.4"
   }
 }
